@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toss</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin: 30px;
+            gap: 20px;
+        }
+
+        .heading {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-size: 4rem;
+            color: navy;
+        }
+
+        .results {
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .count {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.5rem;
+            color: orangered;
+            font-weight: 400;
+        }
+
+        .toss {
+            margin: 20px;
+            height: 200px;
+            width: 200px;
+            border: 1px solid black;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: purple;
+        }
+
+        .moment {
+            animation: play 0.75s ease-in-out;
+            animation-iteration-count: 1;
+        }
+
+        @keyframes play {
+            0% {
+                transform: rotateX(0deg) scale(1);
+            }
+
+            50% {
+                transform: rotateX(360deg) scale(1.25);
+            }
+
+            100% {
+                transform: rotateX(720deg) scale(1);
+            }
+        }
+
+        .circle {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-size: 3rem;
+            color: white;
+        }
+
+        button {
+            margin: 20px;
+            padding: 7px 20px;
+            border: 1px solid black;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            border-radius: 5px;
+            font-size: 1.5rem;
+            font-weight: 500;
+            background-color: rgb(34, 224, 34);
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .hide {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="heading">Tossing Game</div>
+        <div class="results">
+            <div class="count">Heads : <span id="head">0</span></div>
+            <div class="count">Tails : <span id="tail">0</span></div>
+            <div class="count hide" id="previous">Prev : <span id="prev"></span></div>
+        </div>
+        <div class="toss">
+            <div class="circle">Heads</div>
+        </div>
+        <button id="btn" onclick="play()">Start</button>
+    </div>
+
+    <script>
+        let headCount = 0;
+        let tailCount = 0;
+        let lastResult = "";
+
+        function play() {
+            let toss = document.getElementsByClassName("toss")[0];
+            let tailBox = document.getElementById('tail');
+            let headBox = document.getElementById('head');
+            let prevBox = document.getElementById('previous');
+            let prevCont = document.getElementById('prev');
+            let cir = document.getElementsByClassName('circle')[0];
+            let btn = document.getElementById('btn');
+
+            btn.disabled = true;
+
+            toss.classList.remove('moment');
+            toss.classList.add('moment');
+
+            setTimeout(() => {
+                let res = Math.floor(Math.random() * 2);
+                let curr = "";
+
+                if (lastResult !== "") {
+                    prevBox.classList.remove('hide');
+                    prevCont.innerHTML = lastResult;
+                }
+
+                if (res == 0) {
+                    headCount += 1;
+                    curr = "Head";
+                } else {
+                    tailCount++;
+                    curr = "Tail";
+                }
+
+                tailBox.innerHTML = tailCount;
+                headBox.innerHTML = headCount;
+                cir.innerHTML = curr;
+
+                lastResult = curr;
+
+                toss.classList.remove('moment');
+                btn.disabled = false;
+            }, 750);
+        }
+    </script>
+</body>
+
+</html>
